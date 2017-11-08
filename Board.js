@@ -1,16 +1,17 @@
 var w;
 var board=[];
+var bestMoveIndex=-1;
 
 
 function setup(){
     createCanvas(700,700);
     w=width/3;
     background(51);
-    
+
     for(var y=0;y<3;y++){
       for(var x=0;x<3;x++){
           board[y*3+x]=new Token(x*w,y*w,0)
-      }  
+      }
     }
 }
 function draw(){
@@ -19,14 +20,27 @@ function draw(){
     }
 }
 
-function aiTurn(index,gameBoard, depth, maximizingPlayer){
+function mousePressed(){
+    var i=int(mouseX/w);
+    var j=int(mouseY/w);
+    if(board[j*3+i].player==0){
+      board[j*3+i].player=1;
+      aiTurn(board,0,2);
+  }
+
+}
+
+
+
+
+function aiTurn(gameBoard, depth, maximizingPlayer){
     var filledUp=true;
     var winCheck=false;
     var winner=checkWin();
     var tmpBoard=board;
-
-    for(var i=0;i<board.length;i++){
-        if(board[i].player==0)
+    var bestValue;
+    for(var i=0;i<tmpBoard.length;i++){
+        if(tmpBoard[i].player==0)
             filledUp=false;
     }
     if(filledUp){
@@ -35,21 +49,30 @@ function aiTurn(index,gameBoard, depth, maximizingPlayer){
     if(winner!=0){
         winCheck=true;
         return winner*depth;
-    } 
-    
-    var bestValue = -Infinity;
+    }
+
+    if(maximizingPlayer)
+    bestValue = -Infinity;
     for(var i=0;i<tmpBoard.length;i++){
         if(tmpBoard[i].player == 0){
-            
+
         }
     }
-    
-    
+    else {
+      bestValue=Infinity;
+      for(var i=0;i<tmpBoard.length;i++){
+        if(tmpBoard[i].player == 0){
+
+        }
+      }
+    }
+
+
 
 }
 
 function checkWin(){
-    
+
     var a=checkHorizontal();
     var b=checkDiagonal();
     var c=checkVertical();
